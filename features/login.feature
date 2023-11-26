@@ -31,3 +31,8 @@ Scenario: Login com Credenciais Válidas
 Given que o usuário "caio" possui uma conta
 When o usuário insere seu nome de usuário "caio" e senha "Senha@4321"
 Then o usuário é redirecionado para a página inicial
+
+Scenario: Recuperação de Senha Bem-Sucedida
+Given que o usuário "caio" possui uma conta
+When o usuário solicita a recuperação de senha para o e-mail associado à sua conta "caio@cin.ufpe.br"
+Then o usuário recebe um link ou código de recuperação
