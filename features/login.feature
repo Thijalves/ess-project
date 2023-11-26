@@ -14,3 +14,15 @@ Given que estou na página de login
 When eu faço login com e-mail “myrna@example.com” e senha “Senha@4321”
 Then vejo a mensagem de erro “Email ou senha incorretos”
 And permaneço na página de login
+
+Scenario 3: Tentativa de login com senha incorreta
+Given que estou na página de login
+When eu faço login com e-mail “caio@cin.ufpe.br” e senha “1234@caio”
+Then vejo a mensagem de erro “Email ou senha incorretos”
+And permaneço na página de login
+
+Scenario 4: Tentativa de login com senha em branco
+Given que estou na página de login
+When eu faço login com e-mail “caio@cin.ufpe.br” e senha em branco
+Then vejo a mensagem de erro “Email ou senha incorretos”
+And permaneço na página de login
