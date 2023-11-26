@@ -35,4 +35,5 @@ Then o usuário é redirecionado para a página inicial
 Scenario: Recuperação de Senha Bem-Sucedida
 Given que o usuário "caio" possui uma conta
 When o usuário solicita a recuperação de senha para o e-mail associado à sua conta "caio@cin.ufpe.br"
-Then o usuário recebe um link ou código de recuperação
+Then o usuário recebe um link ou código de recuperação 
+And vejo a mensagem "link/código de verificação enviado para o email"
