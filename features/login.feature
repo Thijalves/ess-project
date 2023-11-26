@@ -26,3 +26,8 @@ Given que estou na página de login
 When eu faço login com e-mail “caio@cin.ufpe.br” e senha em branco
 Then vejo a mensagem de erro “Email ou senha incorretos”
 And permaneço na página de login
+
+Scenario: Login com Credenciais Válidas
+Given que o usuário "caio" possui uma conta
+When o usuário insere seu nome de usuário "caio" e senha "Senha@4321"
+Then o usuário é redirecionado para a página inicial
