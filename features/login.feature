@@ -29,26 +29,25 @@ When eu faço login com e-mail “caio@cin.ufpe.br” e senha em branco
 Then vejo a mensagem de erro “Email ou senha incorretos!”
 And permaneço na página de login
 
-# cenarios de serviço
+# service scenarios
 
-Scenario: Login com Credenciais Válidas
+Scenario 5: Login com Credenciais Válidas
 Given que o usuário "caio" possui uma conta
 When o usuário insere seu nome de usuário "caio" e senha "Senha@4321"
 Then o usuário é redirecionado para a página inicial
 
-Scenario: Recuperação de Senha Bem-Sucedida
+Scenario 6: Recuperação de Senha Bem-Sucedida
 Given que o usuário "caio" possui uma conta
 When o usuário solicita a recuperação de senha para o e-mail associado à sua conta "caio@cin.ufpe.br"
 Then o usuário recebe um link ou código de recuperação 
 And vejo a mensagem "link/código de verificação enviado para o email"
 
-Scenario: Tentativa de Recuperação de Senha com E-mail Inválido
+Scenario 7: Tentativa de Recuperação de Senha com E-mail Inválido
 Given que o usuário "caio" possui uma conta
 When o usuário solicita a recuperação de senha com um e-mail inválido "caio@ufbr.br"
 Then uma mensagem de erro é exibida indicando que o formato do e-mail é inválido
-And vejo a mensagem "link/código de verificação enviado para o email"
 
-Scenario: Tentativa de Recuperação de Senha com E-mail Inválido
+Scenario 8: Tentativa de Login com Nome de Usuário Inexistente
 Given que o usuário "caio" possui uma conta
-When o usuário solicita a recuperação de senha com um e-mail inválido "caio@ufbr.br"
-Then uma mensagem de erro é exibida indicando que o formato do e-mail é inválido
+When o usuário insere um nome de usuário "c123" e senha correta
+Then uma mensagem de erro é exibida indicando nome de usuário inválido 
