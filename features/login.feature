@@ -42,3 +42,13 @@ When o usuário solicita a recuperação de senha para o e-mail associado à sua
 Then o usuário recebe um link ou código de recuperação 
 And vejo a mensagem "link/código de verificação enviado para o email"
 
+Scenario: Tentativa de Recuperação de Senha com E-mail Inválido
+Given que o usuário "caio" possui uma conta
+When o usuário solicita a recuperação de senha com um e-mail inválido "caio@ufbr.br"
+Then uma mensagem de erro é exibida indicando que o formato do e-mail é inválido
+And vejo a mensagem "link/código de verificação enviado para o email"
+
+Scenario: Tentativa de Recuperação de Senha com E-mail Inválido
+Given que o usuário "caio" possui uma conta
+When o usuário solicita a recuperação de senha com um e-mail inválido "caio@ufbr.br"
+Then uma mensagem de erro é exibida indicando que o formato do e-mail é inválido
