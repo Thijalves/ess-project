@@ -11,13 +11,13 @@ class DisciplineService:
     @staticmethod
     def add_discipline(discipline_data: Discipline) -> dict:
         if not discipline_data.is_complete():
-            raise HTTPException(status_code=400, detail="Fill in all the fields.")
+            return {'message': "Fill in all the fields."}
         existing_discipline = db_instance.find_one("disciplines", {"semester": discipline_data.semester, "code": discipline_data.code})
         if existing_discipline:
-            raise HTTPException(status_code=400, detail="Discipline already added.")
+            return {'message': "Discipline already added."}
         insert_result = db_instance.add("disciplines", discipline_data.dict())
         if insert_result:
-            return discipline_data
+            return {"message": "Discipline added successfully.", "details": insert_result}
         else:
             raise HTTPException(status_code=500, detail="Failed to add discipline.")
 

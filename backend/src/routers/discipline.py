@@ -34,7 +34,6 @@ def update_discipline_data(code: str, discipline: Discipline):
         return updated_discipline
     raise HTTPException(status_code=404, detail="Discipline not found")
 
-<<<<<<< HEAD
 @router.put(
     "/code/{code}",
     response_model=Discipline,
@@ -65,19 +64,6 @@ async def remove_discipline(code: str):
     return DisciplineService.delete_discipline(code)
 
 @router.get("/by-semester/{semester}", response_model=List[Discipline], summary="Get disciplines by semester", description="Retrieve a list of disciplines for a specific semester.")
-=======
-@router.delete("/by_code/{code}",
-               status_code=status.HTTP_204_NO_CONTENT,
-               summary="Delete a discipline",
-               description="Remove all disciplines from the system by its unique code.")
-async def remove_discipline(code: str):
-    return DisciplineService.delete_discipline(code)
-
-@router.get("/by-semester/{semester}", 
-            response_model=List[Discipline], 
-            summary="Get disciplines by semester", 
-            description="Retrieve a list of disciplines for a specific semester.")
->>>>>>> fda423977cdad7b798bf037c2448f4c58622674f
 def get_disciplines_by_semester(semester: int):
     return DisciplineService.get_disciplines_by_semester(semester)
 
