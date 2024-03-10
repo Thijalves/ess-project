@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import styles from './EditDisciplinePage.module.css';
+=======
+import Navbar from '../../components/Navbar/navbar'; 
+import styles from './EditDisciplinePage.module.css'; // Importa o arquivo de estilo
+>>>>>>> fda423977cdad7b798bf037c2448f4c58622674f
 
 const EditDisciplinePage = () => {
   let { code } = useParams();
@@ -59,7 +64,8 @@ const EditDisciplinePage = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container}> {/* Adiciona um container para aplicar o estilo de fundo */}
+      <Navbar/>
       <div className={styles.editCard}>
         <h2>Editando Disciplina {discipline.code}</h2>
         <form onSubmit={handleSubmit} className={styles.form}>
