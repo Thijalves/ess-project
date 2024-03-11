@@ -1,4 +1,4 @@
-import styles from "./CourseReviews.module.css"; // Import the CSS module
+import styles from "./CourseReviews.module.css"; // Import CSS module
 import { useEffect, useState } from "react";
 
 function CourseReviews({ course }) {
@@ -21,7 +21,7 @@ function CourseReviews({ course }) {
       }
     };
     fetchReviews();
-  }, [course.code]); // Fetch reviews whenever the course code changes
+  }, [course.code]);
 
   if (reviews.length === 0)
     return (
