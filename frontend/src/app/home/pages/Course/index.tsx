@@ -76,6 +76,32 @@ const Course = () => {
     }
   };
 
+  function select(course) {
+    const getInitialState = () => {
+      const value = "Mais recentes";
+      return value;
+    };
+
+    const [value, setValue] = useState(getInitialState);
+
+    const handleChange = (e) => {
+      setValue(e.target.value);
+    };
+
+    return (
+      <div className={styles.selector}>
+        <label>Método de ordenação :</label>
+        <select value={value} onChange={handleChange}>
+          <option value="recents">Mais recentes</option>
+          <option value="oldest">Mais antigos</option>
+          <option value="worstgrades">Menores notas</option>
+          <option value="bestgrades">Maiores notas</option>
+        </select>
+        <CourseReviews course={[course, 1, value]}></CourseReviews>
+      </div>
+    );
+  }
+
   return (
     <div>
       <section className={styles.container}>
@@ -83,9 +109,7 @@ const Course = () => {
         <CourseInfo course={course} />
         {renderCard()}
       </section>
-      <div>
-        <CourseReviews course={course} pgnumber={1}></CourseReviews>
-      </div>
+      <div>{select(course)}</div>
     </div>
   );
 };

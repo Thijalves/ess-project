@@ -1,17 +1,20 @@
 import styles from "./CourseReviews.module.css"; // Import the CSS module
-import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 
-function CourseReviews(course, pgnumber) {
-  parseInt(pgnumber);
+function CourseReviews({ course }) {
+  const [reviews, setReviews] = useState([]);
+  const method = course[2];
+  const page = course[1];
+  const code = course[0].code;
   useEffect(() => {
     const fetchReviews = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8000/displayreviews/recents/${course.code}/1`
+          `http://localhost:8000/displayreviews/${method}/${code}/${page}`
         );
-        if (response.status === 404) {
-          const reviews = response.json();
+        if (response.status === 200) {
+          const data = await response.json();
+          setReviews(data.filter((review) => true));
         }
       } catch (error) {
         console.error("Error fetching reviews:", error);
@@ -22,27 +25,26 @@ function CourseReviews(course, pgnumber) {
 
   if (reviews.length === 0)
     return (
-      <p className="NoReviewsFound">
+      <p className={styles.NoReviewsFound}>
         Oops... parece que não há mais reviews disponíveis
       </p>
     );
   else
     return (
       <>
+        <div className={styles.ReviewSection}>
+          <h2>Reviews</h2>
+        </div>
         <ul className="list-group">
           {reviews.map((review) => (
-            <li className="singlereview" key={review.id}>
-              <div className="row">
-                <div className="col-10 reviewuser">{review.user}</div>
-                <div className="col-2 reviewdate text-center">
-                  {review.date}
-                </div>
+            <li className={styles.singlereview} key={review}>
+              <div className={styles.row}>
+                <div className={styles.reviewuser}>{review.username}</div>
+                <div className={styles.reviewdate}>{review.time}</div>
               </div>
-              <div className="row">
-                <div className="col-10 reviewcomment ">{review.comment}</div>
-                <div className="col-2 reviewgrade text-center">
-                  {review.grade}
-                </div>
+              <div className={styles.row}>
+                <div className={styles.reviewcomment}>{review.comment}</div>
+                <div className={styles.reviewgrade}>{review.rating}</div>
               </div>
             </li>
           ))}

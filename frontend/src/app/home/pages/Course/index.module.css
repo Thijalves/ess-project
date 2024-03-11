@@ -6,3 +6,10 @@
   justify-content: center;
   margin-top: 5vw;
 }
+
+.selector{
+  width: 90vw;
+  margin-top: 20px;
+  font-size: 20px;
+  margin-left: 20px;
+}

@@ -23,25 +23,31 @@
     width: 1000px;
   }
   
-  .review {
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 1rem 0;
-    margin: 1rem 0;
+  .reviewcomment {
+    width: 800px;
+
   }
   
   .reviewuser{
     font-weight: bold;
     font-size: 120%;
+    width: 800px;
+    height: 50px;
+
   }
   
   .reviewdate{
     font-size: 95%;
+    width: 200px;
+    height: 50px;
+    text-align: center;
   }
   
   .reviewgrade{
     font-weight: bold;
     font-size: 300%;
+    width: 200px;
+    text-align: center;
   }
   
   .NoReviewsFound{
@@ -56,4 +62,8 @@
     width: 50%;
     margin-left: 25%;
     margin-right: 25%;
+  }
+
+  .row{
+    display: flex;
   }
