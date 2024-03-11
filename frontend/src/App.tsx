@@ -4,6 +4,7 @@ import CreateAccount from "./app/home/pages/CreateAccount";
 import DisciplinesPage from "./app/home/pages/Disciplines/DisciplinePage"
 import EditDisciplinePage from "./app/home/pages/Disciplines/EditDisciplinePage"
 import AddDisciplinePage from "./app/home/pages/Disciplines/AddDisciplinePage"
+import LibraryPage from "./app/home/pages/UserLibrary/LibraryPage/LibraryPage"
 import EditAccount from "./app/home/pages/EditAccount";
 import Login from "./app/home/pages/Login";
 import AccountProfile from "./app/home/pages/AccountProfile";
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
     path: "/course/:code",
     Component: Course,
   },
+  {
+    path: "/library",
+    Component: LibraryPage,
+  }
 ]);
 
 export default function App() {

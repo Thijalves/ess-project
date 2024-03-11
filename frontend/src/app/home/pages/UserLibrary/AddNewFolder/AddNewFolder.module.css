@@ -1,0 +1,20 @@
+.newFolder-content {
+    margin: auto;
+    background: var(--white);
+    width: 50%;
+    padding: 5px;
+  }
+  .newFolder-arrow {
+    color: #a00a0a;
+  }
+  [role='tooltip'].newFolder-content {
+    width: 200px;
+    box-shadow: var(--white) 0px 0px 3px;
+  }
+  
+  .newFolder-overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  [data-newFolder='tooltip'].newFolder-overlay {
+    background: transparent;
+  }
