@@ -1,96 +1,211 @@
-import React from 'react';
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from "../../../../../shared/components/Button";
+import Input from "../../../../../shared/components/Input/input";
 import Navbar from '../../../components/Navbar/navbar';
-import CardFolder from '../../../components/Library/FolderCard/FolderCard'; 
-import styles from './LibraryPage.module.css'
+import styles from './AddNewFolder.module.css'
 
-
-interface Folder{
+interface Discipline{
     name: string
-    classes_id: number[]
-}
-interface UserLibrary{
-    user_id: string
-    folders: Folder[]
+    code: string
+    department: string 
+    semester: number
+    professor: string
+    description: string
 }
 
-const LibraryPage = () => {
-    const [library, setLibrary] = useState<UserLibrary>({user_id: "", folders: [{name: 'cadeiras atuais', classes_id: []},
-    {name: 'cadeiras pagas', classes_id: []}, {name: 'eletivas', classes_id: []},
-    {name: 'cadeiras muito legais do perfeito professor breno que eu quero pagar', classes_id: []}]})
-    const [currentPage, setCurrentPage] = useState(1);
-    const FoldersPerPage = 9;
+interface state{
+    id: string,
+    checked: boolean
+}
+class Added{
+    private estado: state[];
+    private addedClasses: string[];
+
+    public constructor() {    
+        this.estado = [];
+        this.addedClasses = [];
+    }
+
+    public setState(): void{
+
+    }
+
+    public checkToggle(name: string){
+        for(let i=0; i<this.estado.length; i++){
+            if( this.estado[i].id == name)
+                return i;
+        }
+        return -1;
+    }
+
+    public addToggle(name: string){
+        this.estado.push({id: name, checked:true});
+        this.addedClasses.push(name);
+        return;
+    }
+
+    public checkClass(name: string){
+        for(let i=0; i<this.addedClasses.length; i++){
+            if( this.addedClasses[i] == name)
+                return i;
+        }
+        return -1;
+    }
+
+    public removeClass(name: string){
+        this.addedClasses = this.addedClasses.filter(element => element!= name);
+    }
+
+    public changeState(name: string){
+        const toggleIndex = this.checkToggle(name);
+        if(toggleIndex != -1){
+            this.estado[toggleIndex].checked = !this.estado[toggleIndex].checked;
+            const classIndex = this.checkClass(name);
+            if(classIndex != -1)
+                this.removeClass(name);
+        }
+    }
+
+    
+}
+
+const AddNewFolder = () => {
     const navigate = useNavigate();
+
+    //folder info
+    const [name, setName] = useState("");
+    const [user_id, setID] = useState("");
+    const [classes_id, setClasses] = useState<number[]>([]);
+    //form info
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState<Discipline[]>([]);
+
+    const [error_message, setErrorMessage] = useState("");
+    const [success_message, setSuccessMessage] = useState("");
+
     const currUser = localStorage.getItem('user') || '{}';
 
-    const getDisciplineCode = async () => {
-        try{
-            const response = await fetch('http://localhost:8000/library/get_user_library', {
-            method: 'GET',
-            body: JSON.parse(currUser).id
-            });
-        
-            if (response.status === 200){
-                const data = await response.json();
-                setLibrary({user_id: JSON.parse(currUser).id, folders: data});
-            }
+    const handleOnChange = (e: ChangeEvent<HTMLInputElement>, classes: Added) => {
+        console.log("---", e.target.checked);
+        const item = Number(e.target.id);
+        if(classes.checkClass(e.target.id) != -1){
 
-        }catch(error){
-            console.error('Erro ao enviar a solicitação GET:', error);
         }
-    }
+        else{
+            classes.addClass(e.target.id);
 
-    const handlePageClick = (type) => {
-        if (type === 'prev') {
-          setCurrentPage(currentPage - 1);
-          setCurrFolders(currFolders.slice(0, currentPage*FoldersPerPage));
-        } else {
-          setCurrentPage(currentPage + 1);
-          setCurrFolders(library.folders.slice(0, currentPage*FoldersPerPage));
         }
+
+        if(e.target.checked == true){
+            const val = classes_id.findIndex((element) => element == item)
+            if(val==-1)
+                setClasses(classes_id.concat(Number(e.target.id)));
+        }
+        else
+            setClasses(classes_id.filter((element) => element != item));
     };
-
-    useEffect(() => {
-        getLibrary();
-      }, [library]);
     
-    if (!library) {
-        navigate('/login');
-        return null;
-    }
-    const [currFolders, setCurrFolders] =  useState(library.folders.length>6 ? library.folders.slice(0,6) : library.folders);
+    useEffect(() => {
+        const fetchSearchResults = async () => {
+            try {
+                const response = await fetch(`http://localhost:8000/discipline/get_disciplines_by_search/${searchQuery}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setSearchResults(data);
+                }
+            } catch (error) {
+                console.error('Error fetching search results:', error);
+            }
+        };
+    
+        fetchSearchResults();
+    },[searchQuery]);
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+    
+        const folderData = {
+          user_id,
+          name,
+          classes_id,
+        };
+
+        setID(JSON.parse(currUser).user_id);
+    
+        try {
+          const response = await fetch('http://localhost:8000/library/create_folder', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(folderData),
+          });
+    
+    
+          if (response.status === 200) {
+            setSuccessMessage('Pasta adicionada com sucesso!');
+            setErrorMessage('');
+            navigate("/library");
+
+          } else {
+            const errorData = await response.json();
+            setErrorMessage(`Erro ao adicionar pasta: ${errorData.detail}`);
+            setSuccessMessage('');
+          }
+        } catch (error) {
+          console.error('Erro ao enviar a solicitação POST:', error);
+          setErrorMessage('Erro ao adicionar pasta. Tente novamente mais tarde.');
+          setSuccessMessage('');
+        }
+      };
+
+      let CousersToggles = new Added;
 
     return (
-        <div>
         <section className={styles.container}>
         <Navbar />
-            <h2 className={styles.heading}>Pastas</h2>
-            <section className={styles.layers}>
-                {currFolders.map((folder, index) => (
-                <div key={index}>
-                <Link to={`/library/${folder.name}`} style={{ textDecoration: 'none' }}>
-                    <CardFolder
-                    top_discipline={folder.classes_id[0]}
-                    name={folder.name}
-                    added={(folder.classes_id.length != 0) ? true : false}
-                    />
-                </Link>
+
+        <h1 className={styles.title}>NOVA PASTA</h1>
+        <form className={styles.formContainer} onSubmit={handleSubmit}>
+
+            <div className={styles.formInputContainer}>
+                <label >Nome:</label>
+                <input type="text" placeholder="Digite o nome da pasta"  value={name} onChange={(e) => setName(e.target.value)}/>
+                <label >Adicionar Cadeiras:</label>
+                <input type="text" placeholder="Pesquise por cadeira" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
+                
+                <div>
+                {searchResults.length > 0 ? (
+                    searchResults.map((disciplina, index) => (
+                    <div key={index}>
+                    <input
+                        id= {disciplina.code} type="checkbox" 
+                        onChange={handleOnChange()} 
+                        checked={!!this.state
+                        
+                        -.checked[{disciplina.code}]}/>   
+                    <label htmlFor={disciplina.code}>{disciplina.name}</label>
+                    </div>
+                    ))
+                ): (
+                    <div> Nenhuma disciplina encontrada.</div>
+                )}
                 </div>
-            ))}
-            </section>
+
+            {error_message && <p className={styles.errorMessage}>{error_message}</p>}
+            {success_message && <p className={styles.successMessage}>{success_message}</p>}
             
-            <div>
-            {currentPage > 1 && <button onClick={() => handlePageClick('prev')} className={styles.button}>Anterior</button>}
-            {library.folders.length > currentPage * FoldersPerPage && <button onClick={() => handlePageClick('next')} className={styles.button}>Próxima</button>}
             </div>
+
+            <Button data-cy="create" type="submit">
+                Adicionar
+            </Button>
+        </form>
         </section>
-        </div>
       );
     
 }
 
-export default LibraryPage;
+export default AddNewFolder;

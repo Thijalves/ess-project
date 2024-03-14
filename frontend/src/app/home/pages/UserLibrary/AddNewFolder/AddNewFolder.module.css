@@ -1,20 +1,41 @@
-.newFolder-content {
-    margin: auto;
-    background: var(--white);
-    width: 50%;
-    padding: 5px;
-  }
-  .newFolder-arrow {
-    color: #a00a0a;
-  }
-  [role='tooltip'].newFolder-content {
-    width: 200px;
-    box-shadow: var(--white) 0px 0px 3px;
-  }
-  
-  .newFolder-overlay {
-    background: rgba(0, 0, 0, 0.5);
-  }
-  [data-newFolder='tooltip'].newFolder-overlay {
-    background: transparent;
-  }
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin-top: 5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-family: 'Alegreya SC';
+}
+
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 400px;
+  border-radius: 5px;
+  padding: 2rem;
+  gap: 16px;
+}
+
+.formInputContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.errorMessage {
+  color: var(--red);
+  padding: 5px;
+}
+
+.successMessage {
+  color: green;
+  padding: 5px;
+}

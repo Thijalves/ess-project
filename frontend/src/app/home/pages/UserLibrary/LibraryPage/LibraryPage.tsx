@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../../../components/Navbar/navbar';
 import CardFolder from '../../../components/Library/FolderCard/FolderCard'; 
 import styles from './LibraryPage.module.css'
-
 interface Folder{
     name: string
     classes_id: number[]
@@ -17,9 +16,7 @@ interface UserLibrary{
 const LibraryPage = () => {
     const [library, setLibrary] = useState<UserLibrary>({user_id: "", folders: [{name: 'cadeiras atuais', classes_id: []},
     {name: 'cadeiras pagas', classes_id: []}, {name: 'eletivas', classes_id: []},
-    {name: 'cadeiras muito legais do perfeito professor breno que eu quero pagar', classes_id: []}]})
-    const [currentPage, setCurrentPage] = useState(1);
-    const FoldersPerPage = 9;
+    {name: 'cadeiras que eu quero pagar', classes_id: []}]})
     const navigate = useNavigate();
     const currUser = localStorage.getItem('user') || '{}';
 
@@ -40,16 +37,6 @@ const LibraryPage = () => {
         }
     }
 
-    const handlePageClick = (type) => {
-        if (type === 'prev') {
-          setCurrentPage(currentPage - 1);
-          setCurrFolders(currFolders.slice(0, currentPage*FoldersPerPage));
-        } else {
-          setCurrentPage(currentPage + 1);
-          setCurrFolders(library.folders.slice(0, currentPage*FoldersPerPage));
-        }
-    };
-
     useEffect(() => {
         getLibrary();
       }, [library]);
@@ -58,31 +45,26 @@ const LibraryPage = () => {
         navigate('/login');
         return null;
     }
-    const [currFolders, setCurrFolders] =  useState(library.folders.length>6 ? library.folders.slice(0,6) : library.folders);
 
     return (
         <div>
         <section className={styles.container}>
         <Navbar />
             <h2 className={styles.heading}>Pastas</h2>
+            <div>
+                <Link to="/library/create-folder" className={styles.heading2}>ADICIONAR PASTA</Link>
+            </div>
             <section className={styles.layers}>
-                {currFolders.map((folder, index) => (
+                {library.folders.map((folder, index) => (
                 <div key={index}>
-                <Link to={`/library/${folder.name}`} style={{ textDecoration: 'none' }}>
                     <CardFolder
                     top_discipline={folder.classes_id[0]}
                     name={folder.name}
                     added={(folder.classes_id.length != 0) ? true : false}
                     />
-                </Link>
                 </div>
-            ))}
+                ))}
             </section>
-            
-            <div>
-            {currentPage > 1 && <button onClick={() => handlePageClick('prev')} className={styles.button}>Anterior</button>}
-            {library.folders.length > currentPage * FoldersPerPage && <button onClick={() => handlePageClick('next')} className={styles.button}>Próxima</button>}
-            </div>
         </section>
         </div>
       );

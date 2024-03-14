@@ -5,6 +5,7 @@ import DisciplinesPage from "./app/home/pages/Disciplines/DisciplinePage"
 import EditDisciplinePage from "./app/home/pages/Disciplines/EditDisciplinePage"
 import AddDisciplinePage from "./app/home/pages/Disciplines/AddDisciplinePage"
 import LibraryPage from "./app/home/pages/UserLibrary/LibraryPage/LibraryPage"
+import AddNewFolder from "./app/home/pages/UserLibrary/AddNewFolder/AddNewFolder"
 import EditAccount from "./app/home/pages/EditAccount";
 import Login from "./app/home/pages/Login";
 import AccountProfile from "./app/home/pages/AccountProfile";
@@ -66,7 +67,11 @@ const router = createBrowserRouter([
   {
     path: "/library",
     Component: LibraryPage,
-  }
+  },
+  // {
+  //   path: "/library/create-folder",
+  //   Component: AddNewFolder,
+  // }
 ]);
 
 export default function App() {

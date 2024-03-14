@@ -17,6 +17,21 @@
   margin-top: 30px;
 }
 
+.heading2{
+  text-decoration: none;
+  text-align: center;
+  font-size: medium;
+  font-weight: 600;
+  position: absolute;
+  top: 13%;
+  right: 5%;
+  background-color: darksalmon;
+  border-radius: 25px;
+  padding: 7px;
+  width: fit-content;
+  color: var(--gray);
+}
+
 .layers{
     margin-top: 3vw;
     display: grid;
