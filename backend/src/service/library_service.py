@@ -27,7 +27,6 @@ class LibraryService:
   def get_by_name_and_userID(folder_name: str, user_id: str) -> dict | None:
 
     folder = db_instance.get_by_name_and_user("folders", folder_name, user_id)
-
     return folder
   
   @staticmethod

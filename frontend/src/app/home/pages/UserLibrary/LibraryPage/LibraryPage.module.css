@@ -1,10 +1,10 @@
 .container {
-    display: flex;
+    display: block;
     width: 90vw;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 5vw;
+    margin-top: 6vw;
   }
 
 .heading{
@@ -17,36 +17,46 @@
   margin-top: 30px;
 }
 
-.heading2{
-  text-decoration: none;
-  text-align: center;
-  font-size: medium;
+.aviso{
   font-weight: 600;
   position: absolute;
-  top: 13%;
-  right: 5%;
-  background-color: darksalmon;
-  border-radius: 25px;
-  padding: 7px;
-  width: fit-content;
-  color: var(--gray);
+  left: 3vw;
+  align-self: center;
+  font-size: x-large;
+  justify-self: center;
+}
+
+.redirect{
+  position: static;
+  margin-left: 10%;
+  margin-top: 10%;
+  padding: 10px;
+  background-color: var(--red);
+  color: var(--white);
+  border-radius: 0.5vw;
+  border-color: transparent;
+  font-size: x-large;
 }
 
 .layers{
     margin-top: 3vw;
+    margin-left: 3vw;
     display: grid;
     grid-template-columns: repeat(3, auto);
-    justify-items:center;
-    align-items: center;
+    align-self: start;
     column-gap: 3vw;
     row-gap: 3vw;
 }
 
 .button{
-  width: 15vw;
-  height: 3vw;
-  margin: 10px;
-  background-color: var(--red);
+  width: fit-content;
+  height: fit-content;
+  padding: 10px;
+  background-color: var(--gray);
+  position: absolute;
+  right: -75%;
+  top:0%;
+  align-self: center;
   color: var(--white);
   border-radius: 0.5vw;
   border-color: transparent;

@@ -1,0 +1,57 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin-top: 5rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    font-family: 'Alegreya SC';
+  }
+  
+  .formContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 400px;
+    border-radius: 5px;
+    padding: 2rem;
+    gap: 16px;
+  }
+  
+  .formInputContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .errorMessage {
+    color: var(--red);
+    padding: 5px;
+  }
+  
+  .successMessage {
+    color: green;
+    padding: 5px;
+  }
+
+  .button{
+    width: fit-content;
+    height: fit-content;
+    padding: 10px;
+    background-color: var(--gray);
+    position: absolute;
+    right: -75%;
+    top:0%;
+    align-self: center;
+    color: var(--white);
+    border-radius: 0.5vw;
+    border-color: transparent;
+    box-shadow: none;
+    outline: none;
+  }

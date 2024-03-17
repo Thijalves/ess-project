@@ -1,97 +1,139 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../../components/Navbar/navbar';
-import CardFolder from '../../../components/Library/FolderCard/FolderCard'; 
+import CardCourse from '../../../components/Library/DisciplineCard/Discipline_in_Folder_Card'; 
 import styles from './FolderPage.module.css'
 
 interface Folder{
     name: string
-    classes_id: number[]
+    classes_id: string[]
 }
-interface UserLibrary{
-    user_id: string
-    folders: Folder[]
+
+interface Discipline{
+    rate:number
+    name: string
+    code: string
+    professor: string
 }
 
 const FolderPage = () => {
-    const [library, setLibrary] = useState<UserLibrary>({user_id: "", folders: [{name: 'Atuais', classes_id: []},{name: 'Terminadas', classes_id: []}]})
-    const [currentPage, setCurrentPage] = useState(1);
-    const FoldersPerPage = 9;
+    let {folder_name} = useParams();
+    const [folder, setFolder] = useState<Folder>({name: '', classes_id: []});
+    const [classes, setClasses] = useState<Discipline[]>([]);
     const navigate = useNavigate();
     const currUser = localStorage.getItem('user') || '{}';
-    /*
-        @router.get("/by_code/{code}",
-            response_model=Discipline,
-            summary="Get a discipline by code",
-                    description="Retrieve detailed information of a specific discipline by its unique code.")
-        def read_discipline(code: str):
-            discipline = DisciplineService.get_discipline_by_code(code)
-            if discipline:
-                return discipline
-            raise HTTPException(status_code=404, detail="Discipline not found")
+    const currUser_id = JSON.parse(currUser).id;
+    const currUser_username = JSON.parse(currUser).username;
 
-    */
-    const getUserFolder = async (name: string) => {
-        try{
-            const response = await fetch('http://localhost:8000/discipline/by_code/', {
-            method: 'GET',
-            body: JSON.parse(currUser).id
+    const getUserFolder = async () => {    
+        try {
+            const response = await fetch(`http://localhost:8000/library/get_folder/${folder_name}?user_id=${currUser_id}`,{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
             });
-        
-            if (response.status === 200){
+
+            if (response.ok) {
                 const data = await response.json();
-                setLibrary({user_id: JSON.parse(currUser).id, folders: data});
+                console.log('data:',data['detail']);
+                delete data['detail']['user_id'];
+                setFolder(data['detail']);
             }
 
-        }catch(error){
-            console.error('Erro ao enviar a solicitação GET:', error);
-        }
-    }
-
-    const handlePageClick = (type) => {
-        if (type === 'prev') {
-          setCurrentPage(currentPage - 1);
-          setCurrFolders(currFolders.slice(0, currentPage*FoldersPerPage));
-        } else {
-          setCurrentPage(currentPage + 1);
-          setCurrFolders(library.folders.slice(0, currentPage*FoldersPerPage));
+        } catch (error) {
+            console.error('Error fetching class results:', error);
         }
     };
 
     useEffect(() => {
+        const getDisciplines = async () => {
+            console.log("codigos",folder.classes_id);
+
+            const new_classes: Discipline[] = []; 
+            for(let i=0; i<folder.classes_id.length; i++){
+                const code = folder.classes_id[i];
+                try {
+                    const response = await fetch(`http://localhost:8000/discipline/by_code/${code}`,{
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log('data:', data);
+                        const rating =  await fetchReview(code);
+                        new_classes.push({name:data['name'], code:data['name'], professor:data['professor'], rate: rating});
+                    }
+                } catch (error) {
+                    console.error('Error fetching class results:', error);
+                }
+            }
+            setClasses(new_classes);
+        }
+        getDisciplines();
+        console.log('folder:',folder);
+        console.log('classes:',classes);
+    },[folder]);
+
+    useEffect(() => {
+        
         getUserFolder();
-      }, [library]);
-    
-    if (!library) {
-        navigate('/login');
-        return null;
-    }
-    const [currFolders, setCurrFolders] =  useState(library.folders.length>6 ? library.folders.slice(0,6) : library.folders);
+        const timer = setInterval(getUserFolder, 5000);
+        
+        return () => {
+            clearInterval(timer);
+        };
+
+    }, []);
+
+    const fetchReview = async (course_code: string) => {
+        try {
+            const response = await fetch(`http://localhost:8000/review/get_by_user_discipline?username=${currUser_username}&discipline=${course_code}`,{
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                if (data.length == 0){
+                    return -1;
+                }
+                else
+                    return data[0].rating;
+            }
+        } catch (error) {
+            console.error('Error fetching reviews:', error);
+        }
+    };
 
     return (
         <div>
         <section className={styles.container}>
         <Navbar />
-            <h2 className={styles.heading}>Pastas</h2>
-            <section className={styles.layers}>
-                {currFolders.map((folder, index) => (
-                <div key={index}>
-                <Link to={`/library/${folder.name}`} style={{ textDecoration: 'none' }}>
-                    <CardFolder
-                    top_discipline={folder.classes_id[0]}
-                    name={folder.name}
-                    added={(folder.classes_id.length != 0) ? true : false}
-                    />
-                </Link>
-                </div>
-            ))}
+            <h2 className={styles.heading}>{folder.name}
+            <button onClick={() => navigate(`/library/${folder_name}/edit`)} className={styles.button}>EDITAR PASTA</button>
+            </h2>
+            <section className={styles.layers}>{
+            classes.length > 0 ?
+                (classes.map((discipline, index) => (
+                    <div key={index}>
+                        <CardCourse
+                            name={discipline.name}
+                            professor={discipline.professor}
+                            rating={discipline.rate}
+                            code={discipline.code}
+                        />
+                    </div>
+                ))):(
+                    <div className={styles.aviso}>Nenhuma cadeira adicionada</div>
+                )
+            }
             </section>
             
-            <div>
-            {currentPage > 1 && <button onClick={() => handlePageClick('prev')} className={styles.button}>Anterior</button>}
-            {library.folders.length > currentPage * FoldersPerPage && <button onClick={() => handlePageClick('next')} className={styles.button}>Próxima</button>}
-            </div>
         </section>
         </div>
       );

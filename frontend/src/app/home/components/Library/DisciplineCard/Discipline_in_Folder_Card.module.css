@@ -9,52 +9,62 @@
   display: block;
   position: relative;
   &:hover {
-    box-shadow: 8px 8px 0 2px rgba(0,0,0,0.2)
+    box-shadow: 8px 8px 0 2px rgba(0,0,0,0.2);
   }
 }
-.folder_box {
+.course_box {
   position: absolute;
   left: 40%;
   right: 5%;
   bottom: 10%;
   top: 40%;
   display: grid;
-  grid-template-rows: auto max-content;
-  text-align:right;
-  text-wrap:balance;
+  grid-template-rows: repeat(5, auto);
+  text-align:left;
+  text-wrap:nowrap;
+  text-overflow: clip;
+  white-space: nowrap;
   overflow:hidden;
-  text-transform:uppercase;
+  text-transform:capitalize;
   font-family: 'Times New Roman', Times, serif; 
   font-size:x-large;
   font-weight: 600;
   color: var(--gray);
 }
 
-.folder_title {
+.course_title {
   position: relative;
-  grid-row: 2/auto;
+  grid-row: 2/3;
+}
+
+.course_professor {
+  position: relative;
+  grid-row: 3/4;
+}
+
+.course_rating {
+  position: relative;
+  grid-row: 4/5;
 }
 
 .square {
   border-radius: 15px;
   background: #a00a0a;
-  box-shadow: 15px 15px 0px 5px #610606;
   color: var(--black);
   position: absolute;
   width: 30%;
+  padding: 10px;
   height: auto;
   aspect-ratio: 1 / 1;
-  top: 7.5%;
   left: 5%;
+  bottom: 15%;
+  grid-row: auto / 5;
 }
 .square img{
   object-fit:cover;
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  left: 50%;
-  margin-left: -25px;
-  top: 50%;
-  margin-top: -25px;
+  height: 100%;
+  width: 100%;
+  place-self: center center;
+  opacity: 1;
   border-radius: 15px;
 }

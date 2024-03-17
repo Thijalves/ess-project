@@ -101,9 +101,9 @@ class Database:
         collection: Collection = self.db[collection_name]
 
         folder = collection.find_one({"user_id": user_id, "name": folder_name})
-        
-        if not folder:
-            return None
+        if(folder is None):
+            return folder
+        del folder["_id"]
         return folder
 
     def add(self, collection_name: str, folder: dict) -> dict:
