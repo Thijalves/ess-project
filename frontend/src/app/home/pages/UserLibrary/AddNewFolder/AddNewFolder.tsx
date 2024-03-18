@@ -111,7 +111,7 @@ const AddNewFolder = () => {
 
             <div className={styles.formInputContainer}>
                 <label >Nome:</label>
-                <input type="text" placeholder="Digite o nome da pasta"  value={name} onChange={(e) => setName(e.target.value)}/>
+                <input id="Nome" type="text" placeholder="Digite o nome da pasta"  value={name} onChange={(e) => setName(e.target.value)}/>
                 <label >Adicionar Cadeiras:</label>
                 <input type="text" placeholder="Pesquise por cadeira" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}/>
                 <>{searchQuery.length > 0 ?
