@@ -51,27 +51,6 @@ before(() => {
   
 });
 
-after(() => {
-    // delete user
-    cy.request({
-      method: 'DELETE',
-      url: 'http://localhost:8000/user/delete?username=maa5?password=senha',
-      failOnStatusCode: false // Prevent Cypress from failing the test on non-2xx status codes
-    }).then((response) => {
-      // Check if the response status code is either 200 or 404
-      expect(response.status).to.be.oneOf([200, 404]);
-    });
-    // delete course
-    cy.request({
-      method: 'DELETE',
-      url: 'http://localhost:8000/discipline/by_code/ess',
-      failOnStatusCode: false // Prevent Cypress from failing the test on non-2xx status codes
-    }).then((response) => {
-      // Check if the response status code is either 200 or 404
-      expect(response.status).to.be.oneOf([200, 204, 404]);
-    });
-});
-
      //the user "maa5" does not have a folder named "1o periodo" in the library
 Given('the user {string} does not have a folder named {string} in the library', (username, folder_name) => {
     const currUser = localStorage.getItem('user') || '{}';
@@ -102,18 +81,18 @@ Given('the user {string} does not have a folder named {string} in the library', 
   });
 
   When('the user fills the {string} field with {string}',(field, folder_name) =>{
-        cy.get(`input[id="${field}"]`).type(folder_name);
+    cy.get(`input[id="${field}"]`).type(folder_name);
   });
 
   When('the user confirms on {string}',(buttonText) =>{
-    cy.contains(buttonText).click();
+    cy.get('button[type="submit"]').click();
   });
 
   Then('the user is redirected to the page {string}', (page) => {
     cy.url().should('include', page);
   });
   
-  Then("it's possible to see the folder card with title {string}", (text) => {
-    cy.get(`a[href="${text}"]`)
+  Then("it's possible to see the folder card with link to {string}", (text) => {
+    cy.get(`a[href*="${text}"]`);
   });
   

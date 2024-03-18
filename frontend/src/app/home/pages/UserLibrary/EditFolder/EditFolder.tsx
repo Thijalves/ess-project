@@ -143,6 +143,7 @@ const EditFolder = () => {
           if (response.status === 200) {
             setSuccessMessage('Pasta editada com sucesso!');
             setErrorMessage('');
+            navigate('/library');
           } else {
             const errorData = await response.json();
             setErrorMessage(`Erro ao adicionar pasta: ${errorData.detail}`);
