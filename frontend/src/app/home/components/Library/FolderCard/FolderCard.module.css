@@ -1,0 +1,60 @@
+.card:link, &:visited {
+  border-radius: 25px;
+  color: black;
+  width:25vw;
+  height:10vw;
+  overflow:hidden;
+  box-shadow: 8px 8px 12px 2px rgba(0,0,0,0.2);
+  transition: 0.3s;
+  display: block;
+  position: relative;
+  &:hover {
+    box-shadow: 8px 8px 0 2px rgba(0,0,0,0.2)
+  }
+}
+.folder_box {
+  position: absolute;
+  left: 40%;
+  right: 5%;
+  bottom: 10%;
+  top: 40%;
+  display: grid;
+  grid-template-rows: auto max-content;
+  text-align:right;
+  text-wrap:balance;
+  overflow:hidden;
+  text-transform:uppercase;
+  font-family: 'Times New Roman', Times, serif; 
+  font-size:x-large;
+  font-weight: 600;
+  color: var(--gray);
+}
+
+.folder_title {
+  position: relative;
+  grid-row: 2/auto;
+}
+
+.square {
+  border-radius: 15px;
+  background: #a00a0a;
+  box-shadow: 15px 15px 0px 5px #610606;
+  color: var(--black);
+  position: absolute;
+  width: 30%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  top: 7.5%;
+  left: 5%;
+}
+.square img{
+  object-fit:cover;
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  left: 50%;
+  margin-left: -25px;
+  top: 50%;
+  margin-top: -25px;
+  border-radius: 15px;
+}

@@ -2,8 +2,7 @@ from fastapi import APIRouter, HTTPException
 from starlette.responses import JSONResponse
 from service.library_service import LibraryService
 from schemas.library import (
-    FolderModel,
-    FolderList
+    FolderModel
 )
 
 router = APIRouter()
@@ -33,19 +32,18 @@ def get_all_folders():
   response_class=JSONResponse,
   summary="Get all folders from a user's library",
 )
-def get_user_library(user_id: str):
+def get_user_library(user_id: str = ''):
   folders = LibraryService.get_by_userID(user_id)
   return {"detail": folders}
 
 @router.get(
   "/get_folder/{folder_name}",
   tags=['Library'],
-  response_model=FolderModel,
   status_code=200,
   response_class=JSONResponse,
   summary="Get a specific folder from user",
 )
-def get_folder(folder_name: str, user_id: str):
+def get_folder(folder_name: str, user_id: str = ''):
   folder_name = folder_name.replace('_',' ')
   folder = LibraryService.get_by_name_and_userID(folder_name, user_id)
   return {"detail": folder}

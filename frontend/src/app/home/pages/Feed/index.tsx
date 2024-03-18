@@ -58,6 +58,7 @@ const Feed = () => {
   if (courses.length === 0) {
     return (
       <section className={styles.container}>
+        <Navbar />
         <h1>Página em manutenção. Aguarde o cadastro de disciplinas.</h1>
       </section>
     ) ;
