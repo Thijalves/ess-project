@@ -4,6 +4,7 @@ import styles from './navbar.module.css';
 import search_icon from '../../assets/search-icon.svg';
 
 const Navbar: React.FC = () => {
+  //Realizar a pesquisa pela serch bar
   const [searchQuery, setSearchQuery] = useState('');
   
   const handleSearch = () => {
